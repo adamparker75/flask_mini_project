@@ -20,12 +20,12 @@
             <a href="{{ url_for('get_tasks') }}" class="brand-logo">Task Manager</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
             <ul class="right hide-on-med-and-down">
-                <li><a href="{{ url_for('get_tasks') }}">Home</a></li> <!--This is the url_for, for the function in app.py that renders the main page-->
+                <li><a href="{{ url_for('get_tasks') }}">Home</a></li> <!--This is the url_for, for the function in app.py that renders the main page all of the url_fors point to a function in the app.py-->
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">New Task</a></li>
                 <li><a href="#">Manage Categories</a></li>
                 <li><a href="#">Log Out</a></li>
-                <li><a href="#">Log In</a></li>
+                <li><a href="{{ url_for('login') }}">Log In</a></li>
                 <li><a href="{{ url_for('register') }}">Register</a></li>
             </ul>
             </div>
@@ -33,13 +33,13 @@
 
         <!-- mobile side navbar -->
         <ul class="sidenav" id="mobile-demo">
-            <li><h4 class="center-align light-blue-text text-darken-4">Task Manager</h4></li>
+            <li><h4 class="center-align deep-purple-text text-darken-2">Task Manager</h4></li>
             <li><a href="{{ url_for('get_tasks') }}">Home</a></li>
             <li><a href="#">Profile</a></li>
             <li><a href="#">New Task</a></li>
             <li><a href="#">Manage Categories</a></li>
             <li><a href="#">Log Out</a></li>
-            <li><a href="#">Log In</a></li>
+            <li><a href="{{ url_for('login') }}">Log In</a></li>
             <li><a href="{{ url_for('register') }}">Register</a></li>
         </ul>
     </header>

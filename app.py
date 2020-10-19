@@ -25,19 +25,6 @@ def get_tasks():
     tasks = mongo.db.tasks.find()
     return render_template("tasks.html", tasks=tasks)
 
-"""
-building the registration functionality
-Always start by building the functionality
-for the GET method, ie return render_template
-We then ask if the request method is post
-And check the db to see if the username exists and
-then check it against what the user input on the form
-If there is alrady a username we redirect them back
-using the url_for to the register function.
-We then create a variable called register, which gathers
-the data on the form and acts as the else statement.
-This data is stored in a dictionary
-"""
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -61,6 +48,41 @@ def register():
         flash("Registration Successful!")     
     return render_template("register.html")
 
+"""
+The only thing we need using the GET method
+is the login template
+The function checks for existing users if
+the method is POST, it checks the db for the 
+username key
+In the flash message the curly brackets are a placeholder
+"""
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # check if username exists in the db
+        existing_user = mongo.db.users.find_one(
+            {"username": request.form.get("username").lower()})
+
+        if existing_user:
+            # ensure hashed password matches user input
+            if check_password_hash(
+                existing_user["password"], request.form.get("password")):
+                    session["user"] = request.form.get("username").lower()
+                    flash("Welcome, {}".format(request.form.get("username")))
+            else:
+                # invalid password match
+                flash("Incorrect Username and/or Password")
+                return redirect(url_for("login"))
+            
+        else:
+            # username doesn't exist
+            flash("Incorrect Username and/or Password")
+            return redirect(url_for("login"))
+
+    return render_template("login.html")
+    
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
