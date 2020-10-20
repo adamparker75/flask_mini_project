@@ -86,7 +86,27 @@ def profile(username):
     # grab the session user's username from the database
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
-    return render_template("profile.html", username=username)
+
+    if session["user"]:
+        # if the session cookie is user, go to profile page if not go to login
+        return render_template("profile.html", username=username)
+
+    return redirect(url_for("login"))
+
+"""
+The below route is to create the log out function
+as we're not posting anything we don't need to supply any
+methods as GET is the default one.
+We flash a message then clear the session cookie
+and redirect them back to the login screen.
+"""
+
+@app.route("/logout")
+def logout():
+    # remove user from session cookie
+    flash("You have been logged out")
+    session.pop("user")
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":

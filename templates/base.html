@@ -1,73 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css">
-    <script src="https://kit.fontawesome.com/02ab384222.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
-    {% block syles %}
-    {% endblock %}
-    <title>Task Manager</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+		integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+		crossorigin="anonymous" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+		type="text/css">
+	<script src="https://kit.fontawesome.com/02ab384222.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+	{% block syles %}
+	{% endblock %}
+	<title>Task Manager</title>
 </head>
+
 <body>
-    <header>
-        <!-- top navbar -->
-        <nav class="nav-extended text-shadow deep-purple darken-2">
-            <div class="nav-wrapper">
-            <a href="{{ url_for('get_tasks') }}" class="brand-logo">Task Manager</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="{{ url_for('get_tasks') }}">Home</a></li> <!--This is the url_for, for the function in app.py that renders the main page all of the url_fors point to a function in the app.py-->
+	<header>
+		<!-- top navbar -->
+		<nav class="nav-extended text-shadow deep-purple darken-2">
+			<div class="nav-wrapper">
+				<a href="{{ url_for('get_tasks') }}" class="brand-logo">Task Manager</a>
+				<a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
+				<ul class="right hide-on-med-and-down">
+					<!--This is the url_for, for the function in app.py that renders the main page, all of the url_fors point to a function in the app.py-->
+					<li><a href="{{ url_for('get_tasks') }}">Home</a></li>
+					<!--If there is a session cookie we will display the 4 links below the if statement-->
+					{% if session.user %}
+                        <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
+                        <li><a href="#">New Task</a></li>
+                        <li><a href="#">Manage Categories</a></li>
+                        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+					<!--Otherwise we will display these-->
+					{% else %}
+                        <li><a href="{{ url_for('login') }}">Log In</a></li>
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+
+		<!-- mobile side navbar -->
+		<ul class="sidenav" id="mobile-demo">
+			<li>
+				<h4 class="center-align deep-purple-text text-darken-2">Task Manager</h4>
+			</li>
+			<li><a href="{{ url_for('get_tasks') }}">Home</a></li>
+			{% if session.user %}
                 <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
                 <li><a href="#">New Task</a></li>
                 <li><a href="#">Manage Categories</a></li>
-                <li><a href="#">Log Out</a></li>
+                <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+			<!--Otherwise we will display these-->
+			{% else %}
                 <li><a href="{{ url_for('login') }}">Log In</a></li>
                 <li><a href="{{ url_for('register') }}">Register</a></li>
-            </ul>
-            </div>
-        </nav>
+			{% endif %}
+		</ul>
+	</header>
 
-        <!-- mobile side navbar -->
-        <ul class="sidenav" id="mobile-demo">
-            <li><h4 class="center-align deep-purple-text text-darken-2">Task Manager</h4></li>
-            <li><a href="{{ url_for('get_tasks') }}">Home</a></li>
-            <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
-            <li><a href="#">New Task</a></li>
-            <li><a href="#">Manage Categories</a></li>
-            <li><a href="#">Log Out</a></li>
-            <li><a href="{{ url_for('login') }}">Log In</a></li>
-            <li><a href="{{ url_for('register') }}">Register</a></li>
-        </ul>
-    </header>
+	<section>
+		<!-- flash messages -->
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		{% for message in messages %}
+		<div class="row flashes">
+			<h4 class="deep-purple lighten-4 center-align">
+				{{ message }}
+			</h4>
+		</div>
+		{% endfor %}
+		{% endif %}
+		{% endwith %}
+	</section>
 
-    <section>
-        <!-- flash messages -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="row flashes">
-                        <h4 class="deep-purple lighten-4 center-align">
-                        {{ message }}                      
-                        </h4>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </section>
-
-    <!--The naming of the block elements needs to be consistent-->
-    <main class="containe">
-    {% block content %}
-    {% endblock %}
-    </main>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    {% block scripts %}
-    {% endblock %}
+	<!--The naming of the block elements needs to be consistent-->
+	<main class="containe">
+		{% block content %}
+		{% endblock %}
+	</main>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+		integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+	{% block scripts %}
+	{% endblock %}
 </body>
+
 </html>
