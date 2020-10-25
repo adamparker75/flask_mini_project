@@ -93,13 +93,6 @@ def profile(username):
 
     return redirect(url_for("login"))
 
-"""
-The below route is to create the log out function
-as we're not posting anything we don't need to supply any
-methods as GET is the default one.
-We flash a message then clear the session cookie
-and redirect them back to the login screen.
-"""
 
 @app.route("/logout")
 def logout():
@@ -111,7 +104,8 @@ def logout():
 
 @app.route("/add_task")
 def add_task():
-    return render_template("add_task.html")
+    categories = mongo.db.categories.find().sort("category_name", 1)
+    return render_template("add_task.html", categories=categories)
 
 
 if __name__ == "__main__":
