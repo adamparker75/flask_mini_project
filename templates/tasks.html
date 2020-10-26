@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %} <!--This is taken from base.html-->
 
+    <h3 class="deep-purple-text text-darken-2 center-align">All Tasks</h3>
+
     <!-- We can use a jinja for loop to generate a list item for each task
     We are listing each task and each due date, within the collapsible body
     we add the category name and description.
-    We also check if task is urgent is on 
+    We also check if task is urgent is on.
+    Task.created_by is taken from our app.py file
     -->
     <ul class="collapsible">
         {% for task in tasks %}
@@ -20,6 +23,7 @@
 			<div class="collapsible-body">
                 <strong>{{ task.category_name }}</strong>
                 <p>{{ task.task_description }}</p>
+                <p><em>by: {{ task.created_by }}</em></p>
             </div>
 		</li>
 		{% endfor %}
