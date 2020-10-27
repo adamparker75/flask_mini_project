@@ -4,19 +4,14 @@
 <h3 class="deep-purple-text text-darken-2 center-align">Edit Task</h3>
 
 <div class="row card-panel grey lighten-5">
-  	<form class="col s12" method="POST" action="{{ url_for('edit_task', task_id=task._id) }}">
-        <!-- Category selection -->
+	<form class="col s12" method="POST" action="{{ url_for('edit_task', task_id=task._id) }}">
+		<!-- Category selection -->
 		<div class="row">
 			<div class="input-field col s12">
-                <i class="fas fa-folder-open prefix deep-purple-text text-darken-2"></i>
+				<i class="fas fa-folder-open prefix deep-purple-text text-darken-2"></i>
 				<select id="category_name" name="category_name" class="validate" required>
                     <option value="" disabled>Choose Category</option>
                     {% for category in categories %}
-                    <!--To bind data to our category we conditionally check the exisiting category from the database
-                    If the for loop category name is equal to our tasks category name
-                    then we'll select it as the default
-                    If the category iteration of names does match our task category
-                    name then we apply the selected attribute-->
                         {% if category.category_name == task.category_name %}
                             <option value="{{ category.category_name }}" selected>{{ category.category_name }}</option>
                         {% else %}
@@ -26,25 +21,20 @@
 		        </select>
 				<label for="category_name">Task Category</label>
 			</div>
-        </div>
-        <!-- Task name -->
+		</div>
+		<!-- Task name -->
 		<div class="row">
 			<div class="input-field col s12">
 				<i class="fas fa-pencil-alt prefix deep-purple-text text-darken-2"></i>
-                <!--To bind data to our task name, we include the value attributw
-                and set it to our task variable's task_name as it is an input element-->
 				<input id="task_name" name="task_name" minlength="5" maxlength="50"
                         value="{{ task.task_name }}" type="text" class="validate" required>
 				<label for="task_name">Task Name</label>
 			</div>
 		</div>
-        <!-- Task description -->
+		<!-- Task description -->
 		<div class="row">
 			<div class="input-field col s12">
 				<i class="fas fa-align-left prefix deep-purple-text text-darken-2"></i>
-                <!--For text area elements we need to pass the task variable into the tags
-                directly between the opening and closing tags
-                To clean up whitespace put a - at the beginning and emd of the jinja tag-->
 				<textarea id="task_description" name="task_description" minlength="5"
                         maxlength="200" class="materialize-textarea validate" required>
                         {{- task.task_description -}}
@@ -52,7 +42,7 @@
 				<label for="task_description">Task Description</label>
 			</div>
 		</div>
-        <!-- Due date picker -->
+		<!-- Due date picker -->
 		<div class="row">
 			<div class="input-field col s12">
 				<i class="fas fa-calendar-alt prefix deep-purple-text text-darken-2"></i>
@@ -61,17 +51,12 @@
 				<label for="due_date">Due Date</label>
 			</div>
 		</div>
-        <!-- Is urgent toggle -->
+		<!-- Is urgent toggle -->
 		<div class="row">
 			<div class="input-field col s12">
 				<div class="switch">
 					<i class="fas fa-exclamation-circle prefix deep-purple-text text-darken-2"></i>
 					<label for="is_urgent">
-                        <!--To bind data to our is urgent toggle we check to see 
-                        if the toggle is on.
-                        the else statement is our default off state
-                        As this is a styled check box we need to include the 
-                        checked attribute-->
                           {% if task.is_urgent == "on" %}
                           <input type="checkbox" id="is_urgent" name="is_urgent" checked>
                           {% else %}
@@ -83,19 +68,17 @@
 				</div>
 			</div>
 		</div>
-        <!-- Submit button -->
-        <div class="row">
-            <div class="col s12 center-align">
-                <!-- Cancel button we need to make this an a tag with an
-                href so wwe can call one of our oython functions directly -->
-                <a href="{{ (url_for('get_tasks')) }}" class="btn-large red darken-4 text-shadow">
-                    Cancel <i class="fas fa-times-circle right"></i>
-                </a>
-                <button type="submit" class="btn-large deep-purple darken-2 text-shadow">
+		<!-- Submit button -->
+		<div class="row">
+			<div class="col s12 center-align">
+				<a href="{{ (url_for('get_tasks')) }}" class="btn-large red darken-4 text-shadow">
+					Cancel <i class="fas fa-times-circle right"></i>
+				</a>
+				<button type="submit" class="btn-large deep-purple darken-2 text-shadow">
                     Edit Task <i class="fas fa-edit right"></i>
                 </button>
-            </div>
-        </div>
+			</div>
+		</div>
 	</form>
 </div>
 
