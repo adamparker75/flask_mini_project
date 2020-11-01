@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h3 class="deep-purple-text text-darken-2 center-align">Manage Categories</h3>
+
+    <div class="row">
+        <!--Similar to how we built a collapsible item for each of our tasks, we need to do the same
+        for our categories. This involves creating a Jinja for-loop over our categories list,
+        We do this after the row so that each category gets it's own column
+         -->
+        {% for category in categories %}
+			<div class="col s12 m3">
+				<div class="card deep-purple darken-2 text-shadow center-align">
+					<div class="card-content white-text">
+						<!--For the card title, we can inject our for-loop instance of 'category',
+			            and then using dot-notation, grab the key of 'category_name' from MongoDB.
+			             -->
+						<span class="card-title">{{ category.category_name }}</span>
+					</div>
+					<div class="card-action">
+						<a href="#" class="btn teal accent-4">Edit</a>
+						<a href="#" class="btn light-blue lighten-1">Delete</a>
+					</div>
+				</div>
+			</div>
+        {% endfor %}
+    </div>
+{% endblock %}
