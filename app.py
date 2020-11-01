@@ -143,6 +143,26 @@ def edit_task(task_id):
     return render_template("edit_task.html", task=task, categories=categories)
 
 
+"""
+The below route takes the task_id as a variable
+We don't need to specify any methods as we aren't
+using any POST methods and get is the default
+We add the task_id as a parameter to the function
+Similar to how we retrieve or edit a task, we need
+to get the specific task by the ObjectId
+that matches the 'task_id' variable.
+This time we want to dlete it so we use the
+remove() method
+"""
+
+
+@app.route("/delete_task/<task_id>")
+def delete_task(task_id):
+    mongo.db.tasks.remove({"_id": ObjectId(task_id)})
+    flash("Task Successfully Deleted")
+    return redirect(url_for("get_tasks"))
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
